@@ -1,6 +1,10 @@
-user_1 = {"name": "moshe", "bill": 0, "password": 24556}
-user_2 = {"name": "ele", "bill": 4000000, "password": 958935}
-users = [user_1, user_2]
+import json
+users = []
+with open("data.json") as data:
+    users_arr = json.loads(data.read())
+
+for user in users_arr:
+    print(user["name"])
 
 
 def get_user_from_list_or_exit(name):
