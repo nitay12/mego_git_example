@@ -1,50 +1,43 @@
 import json
-users = []
+
 with open("data.json") as data:
-    users_arr = json.loads(data.read())
-
-for user in users_arr:
-    print(user["name"])
+    users = json.loads(data.read())
 
 
-def get_user_from_list_or_exit(name):
+def get_user_from_list_or_none(name):
     for user in users:
         if user["name"] == name:
             return user
-    print('no user found')
-    exit()
+    return None
 
 
-def mengr_the_bill(amont, fonkshn, name, ):
-    global bill
-    print("welcome to my bank")
-    fonkshn = int(input("Tap your choice "))
-    passbc_1 = int(input("enter your password"))
-    for user in users:
-        if user["password"] == passbc_1 and user["name"] == name:
-            if fonkshn == 1:
-                amont = int(input("tap your amount"))
-                user = get_user_from_list_or_exit(name)
-                user["bill"] += amont
-                # bill +=amont
-                return user
-                if fonkshn == 2:
-                    amont = int(input("tap your amount"))
-                    user = get_user_from_list_or_exit(name)
-                    user["bill"] -= amont
-
-                    return user
-
-                if fonkshn == 3:
-                    print("Your balance is", amont)
-                if fonkshn == 4:
-                    exit()
-                else:
-                    print('')
-        else:
-            print("Error")
+def save_users_data():
+    data_json = json.dumps(users)
+    with open("data.json", "w") as data:
+        data.write(data_json)
 
 
-name = input("enter your name")
+def login(username, password):
+    user = get_user_from_list_or_none(username)  # {name: moshe, password:123456, balance:300} \ None
 
-print(mengr_the_bill(200, 2, name))
+    if user["password"] == password:
+        return user
+    else:
+        return None
+
+
+def bank_manager(amount, function, name):
+    user = get_user_from_list_or_none(name)
+
+    if function == 1:
+        user["bill"] += amount
+        save_users_data()
+        return user
+
+    if function == 2:
+        user["bill"] -= amount
+        save_users_data()
+        return user
+
+    if function == 3:
+        return user["bill"]
